@@ -36,6 +36,52 @@ struct node{
 	struct node *right;
 };
 
-void merge_two_bst(struct node *root1, struct node *root2){
+
+
+
+
+void search(struct node* root, int key, struct node* root2)
+{
 	
+	if (((root->left == NULL) && (root->right == NULL)) || root->data == key)
+	{
+		if (key < root->data)
+			root->left = root2;
+		else if (key > root->data)
+			root->right = root2;
+
+		return;
+	}
+
+
+	if (root->data < key)
+		return search(root, key, root2->right);
+	if (root->data >key)
+		return search(root, key, root2->left);
+}
+
+void insert(struct node *root1, struct node *root2)
+{
+	search(root1, root2->data, root2);
+
+	if (root2->left != NULL || root2->right != NULL)
+	{
+		if (root2->left != NULL)
+			search(root1, root2->left->data, root2->left);
+
+		if (root2->right != NULL)
+			search(root1, root2->right->data, root2->right);
+	}
+}
+
+void merge_two_bst(struct node *root1, struct node *root2){
+
+	if (root1 == NULL || root2 == NULL)
+	{
+		return;
+	}
+
+
+	insert(root1,root2);
+
 }
