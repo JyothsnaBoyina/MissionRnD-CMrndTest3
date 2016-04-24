@@ -50,7 +50,61 @@ struct node{
 	struct node *right;
 };
 
+static int flag;
 
-int get_missing_value(struct node *root,int n){
-    return -1;
+void search(struct node *root, int n)
+{
+	if (root->data == n)
+	{
+		flag= 1;
+		return;
+	}
+
+	else if (root->left != NULL || root->right != NULL)
+	{
+		if (root->left != NULL)
+		search(root->left, n);
+		if (root->right != NULL)
+		search(root->right, n);
+	}
+}
+
+
+
+
+int get_missing_value(struct node *root, int n){
+
+
+
+	if (root == NULL || n == 0)
+		return -1;
+
+	
+
+	if (n > 0)
+		for (int i = 0; i <= n; i++)
+		{
+			flag = 0;
+			search(root, i);
+
+			if (flag == 0)
+			{
+				return i;
+				break;
+			}
+
+		}
+	if (n < 0)
+		for (int i = 0; i >= n; i--)
+		{
+			flag = 0;
+			search(root, i);
+
+			if (flag == 0)
+			{
+				return i;
+				break;
+			}
+
+		}
 }

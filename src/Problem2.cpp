@@ -71,6 +71,120 @@ struct node{
 	struct node *right;
 };
 
+static int z = 0;
+
+void search1(struct node *root, int n)
+{
+	if (root->data == n)
+	{
+		z = 1;
+		return;
+	}
+
+	else if (root->left != NULL || root->right != NULL)
+	{
+		if (root->left != NULL)
+			search1(root->left, n);
+		if (root->right != NULL)
+			search1(root->right, n);
+	}
+}
+
+
+int lengthDLL(struct node_dll *head)
+{
+	int i = 0;
+
+	struct node_dll *temp;
+	temp = (struct node_dll*)malloc(sizeof(struct node_dll));
+	temp = head;
+
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+		i++;
+	}
+	return i + 1;
+}
+
+void nodesintree(struct node *root)
+{
+	if (root != NULL)
+	{
+		if (root->left != NULL)
+			z++;
+		if (root->right != NULL)
+			z++;
+	}
+
+	if (root->left != NULL || root->right != NULL)
+	{
+		if (root->left != NULL)
+			nodesintree(root->left);
+		else if (root->right != NULL)
+			nodesintree(root->right);
+	}
+
+}
+
+int checkBST(struct node *root)
+{
+	if (root != NULL)
+		{
+			if (root->left != NULL)
+			if (root->left->data > root->data)
+				return -1;
+
+			else if (root->right != NULL)
+			 if (root->right->data < root->data)
+				return -1;
+		}
+
+	if (root->left != NULL || root->right != NULL)
+	{
+		if (root->left != NULL)
+			checkBST(root->left);
+		else if (root->right != NULL)
+			checkBST(root->right);
+	}
+
+}
 int is_identical(struct node_dll *head, struct node *root){
-	return -1;
+
+	if (head == NULL || root == NULL)
+		return -1;
+
+	int l1 = lengthDLL(head);
+	z = 1;
+	nodesintree(root);
+
+	if (l1 !=z)
+		return -1;
+
+
+	int check = 0;
+	check = checkBST(root);
+
+	if (check == -1)
+		return 0;
+
+	int d;
+	struct node_dll *temp;
+	temp = (struct node_dll*)malloc(sizeof(struct node_dll));
+	temp = head;
+
+	for (int i = 0; i < l1; i++)
+	{
+		d = temp->data;
+		z = 0;
+		search1(root, d);
+		if (z == 0)
+		{
+			return 0;
+			break;
+		}
+		temp = temp->next;
+    }
+
+	return 1;
 }
